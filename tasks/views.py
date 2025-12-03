@@ -29,14 +29,21 @@ class NewTaskForm(forms.Form):
     )
     completed = forms.BooleanField(required=False)
     priority = forms.BooleanField(required=False, label='Priority')
+    due_date = forms.DateField(
+        required=False, 
+        label='Due Date',
+        widget=forms.DateInput(attrs={'type': 'date'})
+    )
 
 # Index View - Home page showing task list
 @login_required(login_url="users:login")  # Ensure only logged-in users can access
 def index(request):
     # Fetch only tasks that belong to the logged-in user
     tasks = Task.objects.filter(user=request.user)
+    task_count = tasks.count()
     return render(request, "tasks/index.html", {
-        "tasks": tasks  # Pass tasks to the template
+        "tasks": tasks,  # Pass tasks to the template
+        "task_count": task_count  # Pass task count to the template
     })
 
 def home(request):
@@ -55,11 +62,13 @@ def add(request):
             description = form.cleaned_data["description"]
             completed = form.cleaned_data["completed"]
             priority = form.cleaned_data["priority"]
+            due_date = form.cleaned_data["due_date"]
             Task.objects.create(
                 name=task_name,
                 description=description, 
                 completed=completed,
                 priority=priority,
+                due_date=due_date,
                 user=request.user)  # Create a new Task object and save it in the database
             return HttpResponseRedirect(reverse("tasks:index"))
         else:
