@@ -8,6 +8,7 @@
             <th>Task</th>
             <th>Description</th>
             <th>Completed</th>
+            <th>Priority</th>
         </tr>
     </thead>
     <tbody>
@@ -22,10 +23,17 @@
                         ❌
                     {% endif %}
                 </td>
+                <td>
+                    {% if task.priority %}
+                        ⭐
+                    {% else %}
+                        ☆
+                    {% endif %}
+                </td>
             </tr>
         {% empty %}
             <tr>
-                <td colspan="3">No Tasks.</td>
+                <td colspan="4">No Tasks.</td>
             </tr>
         {% endfor %}
     </tbody>

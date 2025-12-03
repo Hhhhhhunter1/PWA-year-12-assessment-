@@ -63,8 +63,8 @@ main {
 }
 main h1 {
   font-size: 2rem;
-  text-align: center;
-  color: #3498db;
+  text-align: left;
+  color: #db3434;
 }
 
 form {

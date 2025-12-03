@@ -28,6 +28,7 @@ class NewTaskForm(forms.Form):
         })
     )
     completed = forms.BooleanField(required=False)
+    priority = forms.BooleanField(required=False, label='Priority')
 
 # Index View - Home page showing task list
 @login_required(login_url="users:login")  # Ensure only logged-in users can access
@@ -53,10 +54,12 @@ def add(request):
             task_name = form.cleaned_data["task"]
             description = form.cleaned_data["description"]
             completed = form.cleaned_data["completed"]
+            priority = form.cleaned_data["priority"]
             Task.objects.create(
                 name=task_name,
                 description=description, 
                 completed=completed,
+                priority=priority,
                 user=request.user)  # Create a new Task object and save it in the database
             return HttpResponseRedirect(reverse("tasks:index"))
         else:
